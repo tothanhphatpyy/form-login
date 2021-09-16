@@ -31,6 +31,7 @@ app.post('/dang-ky', (req, res ) =>{
     arrUser.forEach(item => {
         if(item.username == username){
             isTrung = true;
+            
         } 
     })
 
