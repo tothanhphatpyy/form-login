@@ -1,49 +1,59 @@
-<!-- Special version of Bootstrap that only affects content wrapped in .bootstrap-iso -->
-<link rel="stylesheet" href="https://formden.com/static/cdn/bootstrap-iso.css" /> 
-
-<!-- Inline CSS based on choices in "Settings" tab -->
-<style>.bootstrap-iso .formden_header h2, .bootstrap-iso .formden_header p, .bootstrap-iso form{font-family: Arial, Helvetica, sans-serif; color: black}.bootstrap-iso form button, .bootstrap-iso form button:hover{color: white !important;} .asteriskField{color: red;}</style>
-
-<!-- HTML Form (wrapped in a .bootstrap-iso div) -->
-<div class="bootstrap-iso">
- <div class="container-fluid">
-  <div class="row">
-   <div class="col-md-6 col-sm-6 col-xs-12">
-    <form method="" action="">
-     <div class="form-group ">
-      <label class="control-label requiredField" for="email">
-       Tên đăng nhập
-       <span class="asteriskField">
-        *
-       </span>
-      </label>
-      <input class="form-control" name="username" type="text"/>
-     </div>
-     <div class="form-group ">
-      <label class="control-label requiredField" for="email1">
-       Mật khẩu
-       <span class="asteriskField">
-        *
-       </span>
-      </label>
-      <input class="form-control" name="password" type="text"/>
-     </div>
-     <div class="form-group">
-      <div>
-       <button id="btnSubmitLogin" class="btn btn-primary " name="submit" type="">
-        Đăng ký
-       </button>
-      </div>
-     </div>
-    </form>
-   </div>
-  </div>
- </div>
-</div>
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div style="text-align:center; padding: 20px 0">
+        <lable>Username</lable>
+        <input id="username" type="text"></input>
+        <br>
+        <br>
+        <lable>Password</lable>
+        <input id="password" type="text"></input>
+        <br>
+        <br>
+        <button id="btnSubmitLogin" >Đăng nhập</button>
+        <br>
+        <br>
+        <ul>
+            <% arrUser.forEach(item => { %>
+                <li><%=item.username %> - <%=item.password %></li>
+            <% }) %>
+        </ul>
+    </div>
+    
+    
+</body>
+</html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     $("#btnSubmitLogin").click(function(e){
-        e.preventDefault()
-        alert("OK")
+        e.preventDefault();
+
+        let username = $('#username').val();
+        let password = $('#password').val();
+
+        if(!username){
+            return alert("Vui long nhap username")
+        }
+
+        $.ajax({
+            url: '/dang-ky',
+            type: 'POST',
+            data: { username, password }
+
+        }).done(resp => {
+            console.log({resp});
+            if(resp.error){
+                alert(resp.message)
+            }else{
+                location.reload();
+            }
+        });
+
     })
 </script>
